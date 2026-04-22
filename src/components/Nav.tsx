@@ -8,7 +8,7 @@ import { useAppContext } from '../context/AppContext';
 
 const Nav: React.FC = () => {
   const pathname = usePathname();
-  const { favs } = useAppContext();
+  const { favs, tweaks, setTweak } = useAppContext();
   const favCount = favs.size;
   
   const links = [
@@ -17,6 +17,10 @@ const Nav: React.FC = () => {
     { id: "/search?op=renta", label: "Rentar" },
     { id: "/publish", label: "Publicar" },
   ];
+
+  const toggleTheme = () => {
+    setTweak("theme", tweaks.theme === "light" ? "dark" : "light");
+  };
 
   return (
     <nav className="nav">
@@ -47,6 +51,9 @@ const Nav: React.FC = () => {
           <Link href="/favorites" className="btn btn-ghost btn-sm">
             <Icon name="heart" size={14}/> Favoritos {favCount > 0 && <span className="mono" style={{color:"var(--orange)"}}>{favCount}</span>}
           </Link>
+          <button onClick={toggleTheme} className="btn btn-ghost btn-sm" style={{ padding: "8px" }} title="Cambiar tema">
+            <Icon name={tweaks.theme === "light" ? "moon" : "sun"} size={16} />
+          </button>
           <Link href="/signin" className="btn btn-dark btn-sm">
             <Icon name="user" size={14}/> Ingresar
           </Link>

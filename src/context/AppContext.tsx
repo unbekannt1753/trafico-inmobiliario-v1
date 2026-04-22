@@ -24,7 +24,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [favs, setFavs] = useState<Set<string>>(new Set());
   const [tweaks, setTweaks] = useState<Tweaks>({
-    theme: "dark",
+    theme: "light",
     density: "compact",
     cardStyle: "minimal",
     serifDisplay: true,

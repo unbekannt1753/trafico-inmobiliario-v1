@@ -31,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" data-theme="dark" data-density="compact" data-card="minimal" data-serif="true">
+    <html lang="es" data-theme="light" data-density="compact" data-card="minimal" data-serif="true">
       <body className={`${instrumentSerif.variable} ${inter.variable} ${jetBrainsMono.variable}`}>
         <AppProvider>
           {children}
