@@ -26,7 +26,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: property.title,
       description: property.desc.substring(0, 160),
-      images: property.images || [],
     },
     twitter: {
       card: 'summary_large_image',
