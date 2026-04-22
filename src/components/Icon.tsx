@@ -11,17 +11,20 @@ interface IconProps {
   name: IconName | string;
   size?: number;
   stroke?: number;
+  style?: React.CSSProperties;
+  color?: string;
 }
 
-const Icon: React.FC<IconProps> = ({ name, size = 18, stroke = 1.5 }) => {
+const Icon: React.FC<IconProps> = ({ name, size = 18, stroke = 1.5, style, color }) => {
   const s: React.SVGProps<SVGSVGElement> = { 
     width: size, 
     height: size, 
     fill: "none", 
-    stroke: "currentColor", 
+    stroke: color || "currentColor",
     strokeWidth: stroke, 
     strokeLinecap: "round", 
-    strokeLinejoin: "round" 
+    strokeLinejoin: "round",
+    style
   };
   
   switch (name) {

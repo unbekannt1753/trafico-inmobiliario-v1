@@ -27,7 +27,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     theme: "dark",
     density: "compact",
     cardStyle: "minimal",
-    serifDisplay: true
+    serifDisplay: true,
+    orangeIntensity: "accent"
   });
   const [editMode, setEditMode] = useState(false);
   const [demoMode, _setDemoMode] = useState(true); // Default to demo

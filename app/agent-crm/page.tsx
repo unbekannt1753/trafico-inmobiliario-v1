@@ -74,7 +74,7 @@ export default function AgentCRM() {
           setCurrentAgent(finalAgents[0]);
         }
 
-        const fallbackLeads = [
+        const fallbackLeads: Lead[] = [
           { name: 'Javier M.', prop: 'Casa Roma Norte', stage: 'Calificación', heat: 'hot', budget: '$5.2M', last: 'hace 5 min', phone: '5512345678', objections: [], seen: [], notes: 'Interesado en crédito', interactions: 12 },
           { name: 'Sofia R.', prop: 'Depa Condesa', stage: 'Visita programada', heat: 'warm', budget: '$3.8M', last: 'hace 2h', phone: '5587654321', objections: [], seen: [], notes: 'Busca terraza', interactions: 5 }
         ];
@@ -84,7 +84,7 @@ export default function AgentCRM() {
           name: l.full_name,
           prop: l.property?.title || "Interés general",
           stage: l.status === 'new' ? 'Lead nuevo' : l.status,
-          heat: l.interest_level > 70 ? 'hot' : l.interest_level > 30 ? 'warm' : 'cold',
+          heat: (l.interest_level > 70 ? 'hot' : l.interest_level > 30 ? 'warm' : 'cold') as "hot" | "warm" | "cold" | "done",
           budget: "$---", 
           last: l.last_contact_at ? new Date(l.last_contact_at).toLocaleDateString() : "Nunca",
           phone: l.phone || "---",
@@ -437,7 +437,7 @@ export default function AgentCRM() {
                 </div>
                 <div className="heatmap" style={{height:220, display:"flex", alignItems:"center", justifyContent:"center"}}>
                   <div style={{textAlign:"center", color:"rgba(250,250,247,.5)"}}>
-                    <Icon name="map" size={40} style={{marginBottom:10}}/>
+                    <Icon name="map" size={40} style={{marginBottom:10}} color={undefined} />
                     <div>Mapa interactivo de calor</div>
                   </div>
                 </div>

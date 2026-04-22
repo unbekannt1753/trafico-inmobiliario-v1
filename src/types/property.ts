@@ -7,15 +7,24 @@ export interface Property {
   price: number;
   location: string;
   city?: string;
+  state?: string;
   colonia?: string;
+  bedrooms?: number;
+  bathrooms?: number;
   beds?: number;
   baths?: number;
   m2?: number;
+  m2_const?: number;
+  m2_land?: number;
   parking?: number;
   year?: number | null;
   featured?: boolean;
+  isFeatured?: boolean;
   tag?: string;
   desc?: string;
+  description?: string;
+  images?: string[];
+  currency?: string;
   specs?: Array<[string, string]>;
   amenities?: string[];
   agent?: {
