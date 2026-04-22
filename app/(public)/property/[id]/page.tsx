@@ -4,14 +4,15 @@ import { services } from '@/src/services/factory';
 import PropertyDetailClient from './PropertyDetailClient';
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 /**
  * Genera metadata dinámica para SEO
  */
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const property = await services.getCRM().getPropertyById(params.id);
+  const { id } = await params;
+  const property = await services.getCRM().getPropertyById(id);
   
   if (!property) {
     return {
@@ -36,7 +37,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props) {
-  const property = await services.getCRM().getPropertyById(params.id);
+  const { id } = await params;
+  const property = await services.getCRM().getPropertyById(id);
 
   if (!property) {
     return (
