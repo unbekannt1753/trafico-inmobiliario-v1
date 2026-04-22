@@ -17,7 +17,7 @@ class ServiceFactory {
   }
 
   private updateServices() {
-    const hasSupabase = !!process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const hasSupabase = process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_URL !== 'https://placeholder.supabase.co';
     const hasGemini = !!process.env.NEXT_PUBLIC_GEMINI_API_KEY;
     
     if (this.demoMode) {

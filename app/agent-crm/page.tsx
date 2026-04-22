@@ -80,17 +80,17 @@ export default function AgentCRM() {
         ];
 
         // Map DB leads to UI interface
-        const mappedLeads: Lead[] = leadsData.length > 0 ? leadsData.map((l: any) => ({
-          name: l.full_name,
-          prop: l.property?.title || "Interés general",
-          stage: l.status === 'new' ? 'Lead nuevo' : l.status,
+        const mappedLeads: Lead[] = leadsData.length > 0 ? leadsData.map((l: any): Lead => ({
+          name: String(l.full_name || 'Sin nombre'),
+          prop: String(l.property?.title || "Interés general"),
+          stage: String(l.status === 'new' ? 'Lead nuevo' : l.status),
           heat: (l.interest_level > 70 ? 'hot' : l.interest_level > 30 ? 'warm' : 'cold') as "hot" | "warm" | "cold" | "done",
           budget: "$---", 
-          last: l.last_contact_at ? new Date(l.last_contact_at).toLocaleDateString() : "Nunca",
-          phone: l.phone || "---",
+          last: String(l.last_contact_at ? new Date(l.last_contact_at).toLocaleDateString() : "Nunca"),
+          phone: String(l.phone || "---"),
           objections: [],
           seen: [],
-          notes: l.notes || "",
+          notes: String(l.notes || ""),
           interactions: 1
         })) : fallbackLeads;
 
