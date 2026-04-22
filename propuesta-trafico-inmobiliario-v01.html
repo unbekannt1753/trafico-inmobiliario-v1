@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propuesta v0.3 — Tráfico Inmobiliario · Orbicrea</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: #0a0f1e;
+      color: #c3c9d1;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 40px auto;
+      background: #1e293b;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 56px rgba(0, 0, 0, .6);
+    }
+
+    /* ─── HEADER ─── */
+    .header {
+      background: linear-gradient(135deg, #0a0f1e 0%, #1e3a5f 100%);
+      padding: 52px 64px 44px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid #334155;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      right: -60px;
+      top: -60px;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      border: 64px solid rgba(96, 165, 250, .05);
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      right: 120px;
+      bottom: -80px;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      border: 42px solid rgba(96, 165, 250, .03);
+    }
+
+    .brand {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #3b82f6;
+      margin-bottom: 16px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .brand::before {
+      content: '// ';
+      opacity: .45;
+    }
+
+    .ver-badge {
+      display: inline-block;
+      background: rgba(59, 130, 246, .15);
+      border: 1px solid rgba(59, 130, 246, .3);
+      color: #60a5fa;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 11px;
+      border-radius: 5px;
+      margin-left: 12px;
+      vertical-align: middle;
+    }
+
+    .header h1 {
+      font-size: clamp(26px, 3.2vw, 38px);
+      font-weight: 700;
+      color: #f1f5f9;
+      line-height: 1.18;
+      margin-bottom: 10px;
+    }
+
+    .header h1 span {
+      color: #60a5fa;
+    }
+
+    .header .subtitle {
+      font-size: 15px;
+      color: #64748b;
+      margin-bottom: 32px;
+    }
+
+    .header-meta {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .hm label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: #334155;
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .hm span {
+      font-size: 14px;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .header-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .hpill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .1);
+      color: #94a3b8;
+    }
+
+    .hpill.blue {
+      background: rgba(59, 130, 246, .12);
+      border-color: rgba(59, 130, 246, .3);
+      color: #60a5fa;
+    }
+
+    .hpill.green {
+      background: rgba(74, 222, 128, .1);
+      border-color: rgba(74, 222, 128, .25);
+      color: #4ade80;
+    }
+
+    /* ─── STATS BAR ─── */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-bottom: 1px solid #334155;
+    }
+
+    .stat-cell {
+      padding: 24px 28px;
+      border-right: 1px solid #334155;
+      background: #0f172a;
+    }
+
+    .stat-cell:last-child {
+      border-right: none;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: #334155;
+      margin-bottom: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .stat-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: #f1f5f9;
+      line-height: 1;
+    }
+
+    .stat-value.accent {
+      color: #60a5fa;
+    }
+
+    .stat-sub {
+      font-size: 12px;
+      color: #475569;
+      margin-top: 5px;
+    }
+
+    /* ─── BODY ─── */
+    .body {
+      padding: 52px 64px;
+    }
+
+    /* ─── INTRO BOX ─── */
+    .intro-box {
+      background: rgba(59, 130, 246, .08);
+      border-left: 3px solid #3b82f6;
+      border-radius: 0 10px 10px 0;
+      padding: 20px 26px;
+      margin-bottom: 48px;
+    }
+
+    .intro-box p {
+      color: #93c5fd;
+      font-size: 15px;
+      line-height: 1.78;
+    }
+
+    .intro-box strong {
+      color: #60a5fa;
+    }
+
+    /* ─── SECTION ─── */
+    .section {
+      margin-bottom: 56px;
+    }
+
+    .stitle {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: #3b82f6;
+      margin-bottom: 22px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #334155;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ─── HIGHLIGHT BOX ─── */
+    .highlight-box {
+      background: rgba(59, 130, 246, .06);
+      border: 1px solid rgba(59, 130, 246, .2);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 22px;
+    }
+
+    .highlight-box h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #93c5fd;
+      margin-bottom: 8px;
+    }
+
+    .highlight-box p {
+      font-size: 14px;
+      color: #c3c9d1;
+      line-height: 1.7;
+    }
+
+    .highlight-box strong {
+      color: #60a5fa;
+    }
+
+    /* ─── FLOW CARDS ─── */
+    .flow-row {
+      display: grid;
+      grid-template-columns: 1fr 28px 1fr 28px 1fr;
+      align-items: stretch;
+      gap: 0;
+      margin-bottom: 16px;
+    }
+
+    .flow-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 18px 20px;
+    }
+
+    .flow-card.problem {
+      border-top: 2px solid #ef4444;
+    }
+
+    .flow-card.solution {
+      border-top: 2px solid #22c55e;
+    }
+
+    .flow-card-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .flow-card.problem .flow-card-label {
+      color: #f87171;
+    }
+
+    .flow-card.solution .flow-card-label {
+      color: #4ade80;
+    }
+
+    .flow-card p {
+      font-size: 14px;
+      color: #c3c9d1;
+      line-height: 1.55;
+    }
+
+    .flow-card p strong {
+      color: #e2e8f0;
+    }
+
+    .flow-arrow-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #334155;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    /* ─── FEATURE GRID ─── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .feature-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 20px 18px;
+    }
+
+    .feature-card.highlight-card {
+      border-color: rgba(59, 130, 246, .35);
+      background: rgba(59, 130, 246, .06);
+    }
+
+    .feature-icon {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .feature-card h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 6px;
+    }
+
+    .feature-card p {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.55;
+    }
+
+    /* ─── SCOPE TABLE ─── */
+    .scope-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #0f172a;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #334155;
+      margin-bottom: 14px;
+    }
+
+    .scope-table thead tr {
+      background: #0a0f1e;
+    }
+
+    .scope-table th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #334155;
+      text-align: left;
+      padding: 14px 20px;
+      border-bottom: 1px solid #334155;
+    }
+
+    .scope-table td {
+      padding: 18px 20px;
+      border-bottom: 1px solid #1e293b;
+      vertical-align: top;
+    }
+
+    .scope-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .scope-table tbody tr:hover td {
+      background: rgba(59, 130, 246, .04);
+    }
+
+    .scope-table tfoot td {
+      background: #0a0f1e;
+      padding: 16px 20px;
+      border-top: 1px solid #334155;
+    }
+
+    .mod-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 6px;
+    }
+
+    .mod-desc {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .mod-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 10px;
+    }
+
+    .mod-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: rgba(59, 130, 246, .08);
+      border: 1px solid rgba(59, 130, 246, .18);
+      color: #64748b;
+    }
+
+    .hrs {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #60a5fa;
+      white-space: nowrap;
+    }
+
+    .mxn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 600;
+      color: #e2e8f0;
+      white-space: nowrap;
+    }
+
+    .mxn.total {
+      font-size: 20px;
+      color: #60a5fa;
+    }
+
+    .badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 4px;
+    }
+
+    .badge-core {
+      background: rgba(251, 146, 60, .12);
+      color: #fb923c;
+    }
+
+    .badge-portal {
+      background: rgba(59, 130, 246, .12);
+      color: #60a5fa;
+    }
+
+    .badge-dash {
+      background: rgba(74, 222, 128, .1);
+      color: #4ade80;
+    }
+
+    .badge-config {
+      background: rgba(168, 85, 247, .12);
+      color: #c084fc;
+    }
+
+    /* ─── PAYMENT CARDS ─── */
+    .payment-track {
+      display: grid;
+      grid-template-columns: 1fr 28px 1fr 28px 1fr;
+      align-items: stretch;
+      gap: 0;
+      margin-bottom: 14px;
+    }
+
+    .pay-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 24px 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pay-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+
+    .pay-card.p1::before {
+      background: #f59e0b;
+    }
+
+    .pay-card.p2::before {
+      background: #3b82f6;
+    }
+
+    .pay-card.p3::before {
+      background: #22c55e;
+    }
+
+    .pay-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .pay-card.p1 .pay-num {
+      color: #f59e0b;
+    }
+
+    .pay-card.p2 .pay-num {
+      color: #60a5fa;
+    }
+
+    .pay-card.p3 .pay-num {
+      color: #4ade80;
+    }
+
+    .pay-amount {
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 5px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .pay-card.p1 .pay-amount {
+      color: #f59e0b;
+    }
+
+    .pay-card.p2 .pay-amount {
+      color: #60a5fa;
+    }
+
+    .pay-card.p3 .pay-amount {
+      color: #4ade80;
+    }
+
+    .pay-moment {
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .pay-desc {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.55;
+    }
+
+    .pay-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #334155;
+      font-size: 18px;
+    }
+
+    .pay-total {
+      background: rgba(59, 130, 246, .06);
+      border: 1px solid rgba(59, 130, 246, .2);
+      border-radius: 10px;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .pay-total-label {
+      font-size: 14px;
+      color: #64748b;
+    }
+
+    .pay-total-label strong {
+      color: #e2e8f0;
+    }
+
+    .pay-total-note {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #334155;
+    }
+
+    /* ─── AI SCOPE ─── */
+    .scope-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .scope-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 22px;
+    }
+
+    .scope-card h4 {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: 16px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .good-scope h4 {
+      color: #4ade80;
+    }
+
+    .bad-scope h4 {
+      color: #f87171;
+    }
+
+    .scope-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 6px 0;
+    }
+
+    .si-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .si-yes {
+      background: rgba(74, 222, 128, .15);
+      color: #4ade80;
+    }
+
+    .si-no {
+      background: rgba(239, 68, 68, .2);
+      color: #f87171;
+    }
+
+    .scope-item span {
+      font-size: 14px;
+      color: #c3c9d1;
+      line-height: 1.5;
+    }
+
+    .scope-item span.yes {
+      color: #e2e8f0;
+    }
+
+    /* ─── ARCH ─── */
+    .arch-wrap {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 32px 36px;
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .arch-wrap::after {
+      content: '';
+      position: absolute;
+      right: -40px;
+      top: -40px;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      border: 44px solid rgba(96, 165, 250, .04);
+    }
+
+    .arch-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 8px 0;
+      flex-wrap: wrap;
+    }
+
+    .arch-node {
+      background: #1e293b;
+      border: 1px solid #334155;
+      padding: 9px 18px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #94a3b8;
+      white-space: nowrap;
+    }
+
+    .arch-node.hi {
+      background: rgba(59, 130, 246, .12);
+      border-color: rgba(59, 130, 246, .4);
+      color: #60a5fa;
+    }
+
+    .arch-node.grn {
+      background: rgba(34, 197, 94, .08);
+      border-color: rgba(34, 197, 94, .3);
+      color: #4ade80;
+    }
+
+    .arch-node.blu {
+      background: rgba(96, 165, 250, .08);
+      border-color: rgba(96, 165, 250, .2);
+      color: #93c5fd;
+    }
+
+    .arch-arrow {
+      color: #334155;
+      font-size: 16px;
+    }
+
+    .arch-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #334155;
+      text-align: center;
+      margin: 4px 0 14px;
+    }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .stack-item {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .stack-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: rgba(59, 130, 246, .12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+
+    .stack-layer {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #3b82f6;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .stack-item h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 4px;
+    }
+
+    .stack-item p {
+      font-size: 12px;
+      color: #475569;
+      line-height: 1.5;
+    }
+
+    /* ─── TIMELINE ─── */
+    .tl {
+      position: relative;
+      padding-left: 30px;
+    }
+
+    .tl::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: #334155;
+    }
+
+    .tl-item {
+      position: relative;
+      margin-bottom: 28px;
+    }
+
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -23px;
+      top: 6px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #3b82f6;
+      border: 2px solid #1e293b;
+      box-shadow: 0 0 0 2px #3b82f6;
+    }
+
+    .tl-item .phase {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: #3b82f6;
+      margin-bottom: 4px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .tl-item h4 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin-bottom: 10px;
+    }
+
+    .tl-tasks {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .tl-tasks li {
+      font-size: 14px;
+      color: #64748b;
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.55;
+    }
+
+    .tl-tasks li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #334155;
+    }
+
+    .tl-tasks li strong {
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .tl-deliverable {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      background: rgba(59, 130, 246, .08);
+      border: 1px solid rgba(59, 130, 246, .2);
+      border-radius: 6px;
+      padding: 7px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      color: #60a5fa;
+    }
+
+    .tl-deliverable::before {
+      content: '✓';
+    }
+
+    /* ─── CONDITIONS ─── */
+    .terms-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .term {
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 20px 18px;
+      background: #0f172a;
+    }
+
+    .term-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 28px;
+      font-weight: 700;
+      color: #3b82f6;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .term h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 5px;
+    }
+
+    .term p {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.55;
+    }
+
+    /* ─── TC SECTION ─── */
+    .tc-section {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .tc-header {
+      background: #0a0f1e;
+      padding: 18px 24px;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tc-header .tc-icon {
+      font-size: 18px;
+    }
+
+    .tc-header h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #f1f5f9;
+    }
+
+    .tc-header p {
+      font-size: 12px;
+      color: #475569;
+      margin-top: 2px;
+    }
+
+    .tc-body {
+      padding: 4px 0;
+    }
+
+    .tc-item {
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      gap: 14px;
+      padding: 16px 24px;
+      border-bottom: 1px solid #0f172a;
+      align-items: flex-start;
+    }
+
+    .tc-item:last-child {
+      border-bottom: none;
+    }
+
+    .tc-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: rgba(59, 130, 246, .15);
+      border: 1px solid rgba(59, 130, 246, .25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #60a5fa;
+      font-family: 'JetBrains Mono', monospace;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .tc-content h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 5px;
+    }
+
+    .tc-content p {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.65;
+    }
+
+    .tc-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 4px;
+      margin-bottom: 7px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .tag-blue {
+      background: rgba(59, 130, 246, .12);
+      color: #60a5fa;
+    }
+
+    .tag-green {
+      background: rgba(74, 222, 128, .1);
+      color: #4ade80;
+    }
+
+    .tag-orange {
+      background: rgba(251, 146, 60, .12);
+      color: #fb923c;
+    }
+
+    .tag-red {
+      background: rgba(239, 68, 68, .12);
+      color: #f87171;
+    }
+
+    .tc-warning {
+      background: rgba(251, 146, 60, .06);
+      border: 1px solid rgba(251, 146, 60, .2);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 16px 24px 24px;
+    }
+
+    .tc-warning p {
+      font-size: 13px;
+      color: #fdba74;
+      line-height: 1.65;
+    }
+
+    .tc-warning strong {
+      color: #fb923c;
+    }
+
+    /* ─── OPERATIVO MENSUAL ─── */
+    .op-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .op-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 18px 16px;
+    }
+
+    .op-card.highlight {
+      border-color: rgba(59, 130, 246, .3);
+      background: rgba(59, 130, 246, .06);
+      grid-column: span 2;
+    }
+
+    .op-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+
+    .op-amount {
+      font-size: 24px;
+      font-weight: 700;
+      color: #f1f5f9;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .op-card.highlight .op-amount {
+      color: #60a5fa;
+      font-size: 30px;
+    }
+
+    .op-sub {
+      font-size: 12px;
+      color: #475569;
+    }
+
+    .op-note {
+      font-size: 12px;
+      color: #475569;
+      line-height: 1.5;
+      margin-top: 8px;
+    }
+
+    /* ─── CTA ─── */
+    .cta {
+      background: #0a0f1e;
+      border-top: 1px solid #334155;
+      padding: 32px 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .cta p {
+      font-size: 15px;
+      color: #64748b;
+    }
+
+    .cta strong {
+      color: #e2e8f0;
+    }
+
+    .cta-btn {
+      background: #2563eb;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 13px 30px;
+      border-radius: 8px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .2s;
+    }
+
+    .cta-btn:hover {
+      background: #1d4ed8;
+    }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      background: #0a0f1e;
+      padding: 20px 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid #1e293b;
+    }
+
+    .footer .fb {
+      font-size: 14px;
+      font-weight: 700;
+      color: #3b82f6;
+    }
+
+    .footer .fl {
+      font-size: 12px;
+      color: #334155;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ─── PRINT / PDF ─── */
+    @media print {
+      body {
+        background: #0f172a !important;
+        color: #c3c9d1 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .page {
+        box-shadow: none;
+        margin: 0;
+        border-radius: 0;
+        max-width: 100%;
+      }
+
+      .section {
+        page-break-inside: avoid;
+      }
+
+      .tl-item {
+        page-break-inside: avoid;
+      }
+    }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 900px) {
+      .page {
+        margin: 0;
+        border-radius: 0;
+      }
+
+      .header {
+        padding: 32px 24px 28px;
+      }
+
+      .body {
+        padding: 32px 24px;
+      }
+
+      .cta {
+        padding: 24px;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer {
+        padding: 18px 24px;
+        flex-direction: column;
+        gap: 6px;
+        text-align: center;
+      }
+
+      .stats-bar {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stat-cell:nth-child(2) {
+        border-right: none;
+      }
+
+      .stat-cell:nth-child(3) {
+        border-right: 1px solid #334155;
+      }
+
+      .stat-cell:nth-child(4) {
+        border-right: none;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stack-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .terms-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .op-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .op-card.highlight {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .header h1 {
+        font-size: 22px;
+      }
+
+      .flow-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .flow-arrow-cell {
+        display: none;
+      }
+
+      .scope-compare {
+        grid-template-columns: 1fr;
+      }
+
+      .payment-track {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .pay-connector {
+        display: none;
+      }
+
+      .stack-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .terms-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .op-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .op-card.highlight {
+        grid-column: span 1;
+      }
+
+      .scope-table {
+        font-size: 13px;
+      }
+
+      .scope-table th,
+      .scope-table td {
+        padding: 12px 14px;
+      }
+
+      .tc-item {
+        grid-template-columns: 24px 1fr;
+      }
+    }
+
+    /* contenteditable hint */
+    [contenteditable="true"]:hover {
+      outline: 1px dashed rgba(59, 130, 246, .4);
+      outline-offset: 2px;
+      cursor: text;
+    }
+
+    [contenteditable="true"]:focus {
+      outline: 1px solid #3b82f6;
+      background: rgba(59, 130, 246, .04);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+
+    <!-- ═══════════════ HEADER ═══════════════ -->
+    <div class="header">
+      <div class="brand">propuesta comercial · Orbicrea <span class="ver-badge">v0.1</span></div>
+      <h1>Sistema de Conversión<br><span>Lead → Cita</span> con IA</h1>
+      <div class="subtitle">Agente IA Personal · Portal Inmobiliario · Dashboard · EasyBroker API · WhatsApp · Antispam
+      </div>
+      <div class="header-meta">
+        <div class="hm"><label>Cliente</label><span contenteditable="true">Tráfico Inmobiliario</span></div>
+        <div class="hm"><label>Fecha</label><span contenteditable="true">Abril 2026</span></div>
+        <div class="hm"><label>Preparado por</label><span>Orbicrea Studio</span></div>
+        <div class="hm"><label>Propuesta</label><span contenteditable="true">ORC-2026-012</span></div>
+        <div class="hm"><label>Válida</label><span>30 días</span></div>
+      </div>
+      <div class="header-pills">
+        <span class="hpill">EasyBroker API</span>
+        <span class="hpill">Agente AI</span>
+        <span class="hpill">WhatsApp</span>
+        <span class="hpill">Multi-portal leads</span>
+        <span class="hpill">~500 propiedades</span>
+        <span class="hpill">~11 Agentes Inmobiliarios</span>
+        <span class="hpill blue">Core: Lead → Cita</span>
+        <span class="hpill blue">Antispam + Seguridad</span>
+        <span class="hpill green">API lista ✓</span>
+      </div>
+    </div>
+
+    <!-- ═══════════════ STATS BAR ═══════════════ -->
+    <div class="stats-bar">
+      <div class="stat-cell">
+        <div class="stat-label">Inversión total</div>
+        <div class="stat-value accent" contenteditable="true">$127,000</div>
+        <div class="stat-sub">MXN · 3 pagos</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Tiempo estimado</div>
+        <div class="stat-value">10</div>
+        <div class="stat-sub">semanas · 3 fases</div>
+      </div>
+
+      <div class="stat-cell">
+        <div class="stat-label">Agentes Inmobiliarios</div>
+        <div class="stat-value">~11</div>
+        <div class="stat-sub">con IA personal asignada</div>
+      </div>
+    </div>
+
+    <div class="body">
+
+      <!-- ═══════════════ INTRO ═══════════════ -->
+      <div class="intro-box">
+        <p>Los leads llegan desde múltiples portales aliados al CRM EasyBroker — Inmuebles24, Tráfico Inmobiliario y
+          otros sitios
+          conectados — pero el tiempo de respuesta del Agente Inmobiliario es <strong>largo o nulo</strong>. Cada minuto
+          sin contacto reduce drásticamente las probabilidades de conversión. Esta propuesta presenta un sistema que
+          <strong>arranca el contacto en segundos, califique e informe el estado de cada lead y concreta la
+            cita</strong>
+          — todo automáticamente. La IA actuará como el <strong>agente personal de cada Agente Inmobiliario</strong>,
+          con pleno conocimiento del universo de Tráfico Inmobiliario, Sitio web público con catálogo filtrado de las
+          propiedades agenciadas a Tráfico Inmobiliario, conectado en tiempo real a EasyBroker.
+        </p>
+      </div>
+
+      <!-- ═══════════════ 01 · EL PROBLEMA Y LA SOLUCIÓN ═══════════════ -->
+      <div class="section">
+        <div class="stitle">01 · El Problema &amp; La Solución</div>
+
+        <div style="margin-bottom:20px;">
+          <div
+            style="font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#f87171; font-family:'JetBrains Mono',monospace; margin-bottom:10px;">
+            Proceso actual — con pérdida de leads</div>
+          <div class="flow-row">
+            <div class="flow-card problem">
+              <div class="flow-card-label">Paso 1</div>
+              <p>Lead llega desde Inmuebles24, Lamudi u otros portales aliados al CRM EasyBroker</p>
+            </div>
+            <div class="flow-arrow-cell">→</div>
+            <div class="flow-card problem">
+              <div class="flow-card-label">Problema</div>
+              <p>Agente Inmobiliario debe contestar — tiempo de respuesta <strong>largo o nulo</strong></p>
+            </div>
+            <div class="flow-arrow-cell">→</div>
+            <div class="flow-card problem">
+              <div class="flow-card-label">Consecuencia</div>
+              <p>Cliente pierde interés — <strong>lead se pierde para siempre</strong> sin clasificación ni seguimiento
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div
+            style="font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#4ade80; font-family:'JetBrains Mono',monospace; margin-bottom:10px;">
+            Proceso con IA — conversión y clasificación automática</div>
+          <div class="flow-row">
+            <div class="flow-card solution">
+              <div class="flow-card-label">Paso 1</div>
+              <p>Lead llega de cualquier portal aliado a EasyBroker — <strong>IA arranca contacto en segundos</strong>
+                vía WhatsApp</p>
+            </div>
+            <div class="flow-arrow-cell">→</div>
+            <div class="flow-card solution">
+              <div class="flow-card-label">Paso 2</div>
+              <p>IA califica, clasifica y genera un <strong>informe del estado del lead</strong>. Filtra spam y ataques
+                automáticamente</p>
+            </div>
+            <div class="flow-arrow-cell">→</div>
+            <div class="flow-card solution">
+              <div class="flow-card-label">Resultado</div>
+              <p><strong>Cita agendada</strong> — la IA contacta al Agente Inmobiliario con toda la información del lead
+                y actúa como su secretaria personal</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ 02 · LA IA COMO AGENTE PERSONAL ═══════════════ -->
+      <div class="section">
+        <div class="stitle">02 · La IA: Agente Personal de Cada Agente Inmobiliario</div>
+
+        <div class="highlight-box" style="margin-bottom:20px;">
+          <h4>🤖 Más que un chatbot — una secretaria inteligente del universo inmobiliario</h4>
+          <p>Cada Agente Inmobiliario tendrá asignada una IA con <strong>pleno conocimiento de Tráfico
+              Inmobiliario</strong>: propiedades, políticas, zonas, precios y estilo de comunicación. La IA no solo
+            responde al cliente — también le habla directamente al Agente Inmobiliario, enviándole el informe del lead,
+            la cita confirmada y cualquier pregunta del prospecto, como si fuera su asistente de tiempo completo.</p>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature-card highlight-card">
+            <div class="feature-icon">📋</div>
+            <h4>Calificación e Informe de Leads</h4>
+            <p>La IA no solo contesta — evalúa cada lead, lo clasifica por nivel de interés (caliente, tibio, frío) y
+              genera un informe estructurado con presupuesto, zona de interés, motivación de compra y probabilidad de
+              cierre.</p>
+          </div>
+          <div class="feature-card highlight-card">
+            <div class="feature-icon">🛡️</div>
+            <h4>Seguridad Antispam y Antiataques</h4>
+            <p>Sistema de detección y filtrado de bots, spam, intentos de phishing y ataques de ingeniería social. La IA
+              protege el canal de WhatsApp y el portal, asegurando que solo leads legítimos lleguen al Agente
+              Inmobiliario.</p>
+          </div>
+          <div class="feature-card highlight-card">
+            <div class="feature-icon">👔</div>
+            <h4>Secretaria Personal del Agente Inmobiliario</h4>
+            <p>Una vez agendada la cita, la IA contacta al Agente Inmobiliario directamente con la ficha completa del
+              prospecto, opción para reagendar y capacidad para responder preguntas sobre el lead en tiempo real.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h4>Respuesta Inmediata Multi-portal</h4>
+            <p>Detecta leads de todos los portales aliados a EasyBroker (Inmuebles24, Lamudi y más) y arranca el
+              contacto en segundos, sin importar el origen.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h4>Objetivo Único: Concretar la Cita</h4>
+            <p>Todo el flujo conversacional está diseñado para un solo fin: agendar la cita en 2 a 3 interacciones, que
+              es el ciclo de conversión real de Tráfico Inmobiliario.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📅</div>
+            <h4>Reagendamiento Flexible</h4>
+            <p>El Agente Inmobiliario puede reagendar citas directamente desde el chat con la IA, sin intervención
+              manual en el sistema. La IA notifica al cliente automáticamente.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ 03 · ALCANCE Y COTIZACIÓN ═══════════════ -->
+      <div class="section">
+        <div class="stitle">03 · Alcance &amp; Cotización</div>
+
+        <table class="scope-table">
+          <thead>
+            <tr>
+              <th style="width:46%">Módulo</th>
+              <th>Horas</th>
+              <th>MXN</th>
+              <th>Tipo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="mod-name">🤖 Conversor Lead → Cita (IA + WhatsApp + Seguridad)</div>
+                <div class="mod-desc">Agente IA que toma el lead de EasyBroker desde cualquier portal aliado, inicia
+                  contacto por WhatsApp de forma inmediata, califica e informe el estado del lead, presenta la propiedad
+                  asignada y concreta la cita. Incluye sistema antispam, antiataques y motor de asignación automática al
+                  Agente Inmobiliario correspondiente.</div>
+                <div class="mod-tags">
+                  <span class="mod-tag">EasyBroker API</span>
+                  <span class="mod-tag">Agente AI</span>
+                  <span class="mod-tag">WhatsApp Business</span>
+                  <span class="mod-tag">Antispam</span>
+                  <span class="mod-tag">Antiataques</span>
+                  <span class="mod-tag">Multi-portal</span>
+                  <span class="mod-tag">Informe de leads</span>
+                </div>
+              </td>
+              <td><span class="hrs">116 hrs</span></td>
+              <td><span class="mxn">$80,750</span></td>
+              <td><span class="badge badge-core">Core</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="mod-name">🏠 Portal Inmobiliario</div>
+                <div class="mod-desc">Sitio web público con catálogo filtrado de las 500 propiedades agenciadas a
+                  Tráfico Inmobiliario, conectado en tiempo real a EasyBroker. Fichas técnicas, buscador con filtros,
+                  SEO optimizado. El chat IA vive aquí también para captura de leads web.</div>
+                <div class="mod-tags">
+                  <span class="mod-tag">Next.js</span>
+                  <span class="mod-tag">EasyBroker sync</span>
+                  <span class="mod-tag">500 propiedades</span>
+                  <span class="mod-tag">SEO</span>
+                  <span class="mod-tag">Chat IA integrado</span>
+                </div>
+              </td>
+              <td><span class="hrs">31 hrs</span></td>
+              <td><span class="mxn">$21,875</span></td>
+              <td><span class="badge badge-portal">Portal</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="mod-name">📊 Dashboard del Agente Inmobiliario</div>
+                <div class="mod-desc">Panel interno donde cada Agente Inmobiliario ve el historial completo de
+                  conversaciones de la IA con sus leads, informes de clasificación, métricas de conversión, citas
+                  agendadas y estado actualizado de cada prospecto antes de la visita.</div>
+                <div class="mod-tags">
+                  <span class="mod-tag">Historial IA</span>
+                  <span class="mod-tag">Informes de leads</span>
+                  <span class="mod-tag">Métricas</span>
+                  <span class="mod-tag">11 Agentes Inmobiliarios</span>
+                </div>
+              </td>
+              <td><span class="hrs">19 hrs</span></td>
+              <td><span class="mxn">$13,250</span></td>
+              <td><span class="badge badge-dash">Dashboard</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="mod-name">⚙️ Configurador del Sistema</div>
+                <div class="mod-desc">Panel de administración para ajustar el comportamiento del agente IA: plantillas
+                  de respuesta, reglas de asignación de Agentes Inmobiliarios, horarios de atención, zonas geográficas,
+                  parámetros de calificación y reglas de filtro antispam.</div>
+                <div class="mod-tags">
+                  <span class="mod-tag">Reglas IA</span>
+                  <span class="mod-tag">Plantillas</span>
+                  <span class="mod-tag">Admin</span>
+                  <span class="mod-tag">Filtros antispam</span>
+                </div>
+              </td>
+              <td><span class="hrs">16 hrs</span></td>
+              <td><span class="mxn">$11,125</span></td>
+              <td><span class="badge badge-config">Config</span></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td><strong style="color:#e2e8f0; font-size:15px;">Total proyecto completo</strong></td>
+              <td><span class="hrs" style="font-size:14px;">182 hrs</span></td>
+              <td><span class="mxn total">$127,000</span></td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div class="cell-label"
+          style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:#334155; margin-bottom:12px; margin-top:28px;">
+          Costos operativos mensuales (post-lanzamiento · responsabilidad del cliente)</div>
+        <div class="op-grid">
+          <div class="op-card">
+            <div class="op-label"></div>
+            <div class="op-amount">Hosting + Infra</div>
+            <div class="op-sub"></div>
+            <div class="op-note">Vercel Pro + DB cloud. Escalable según tráfico.</div>
+          </div>
+          <div class="op-card">
+            <div class="op-label"></div>
+            <div class="op-amount">API de IA</div>
+            <div class="op-sub"></div>
+            <div class="op-note">Variable. ~500 conversaciones/mes incluidas.</div>
+          </div>
+          <div class="op-card">
+            <div class="op-label"></div>
+            <div class="op-amount">WhatsApp API</div>
+            <div class="op-sub"></div>
+            <div class="op-note">Meta Cloud o Twilio. Variable por volumen.</div>
+          </div>
+          <div class="op-card">
+            <div class="op-label"></div>
+            <div class="op-amount">Mantenimiento</div>
+            <div class="op-sub"></div>
+            <div class="op-note">Soporte básico, actualizaciones, monitoreo.</div>
+          </div>
+          <div class="op-card highlight">
+            <div class="op-label">Total mensual estimado</div>
+            <div class="op-amount">~$6,700</div>
+            <div class="op-sub">MXN / mes</div>
+            <div class="op-note">Costo operativo post-entrega. Se optimiza según uso real y volumen de leads.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ 04 · ESQUEMA DE PAGOS ═══════════════ -->
+      <div class="section">
+        <div class="stitle">04 · Esquema de Pagos</div>
+
+        <div class="payment-track">
+          <div class="pay-card p1">
+            <div class="pay-num">Pago 01 · Anticipo</div>
+            <div class="pay-amount">$42,333</div>
+            <div class="pay-moment">Al firmar el contrato</div>
+            <div class="pay-desc">Permite arrancar el proyecto en la semana acordada. Cubre arquitectura, accesos y
+              primeras semanas de desarrollo.</div>
+          </div>
+          <div class="pay-connector">→</div>
+          <div class="pay-card p2">
+            <div class="pay-num">Pago 02 · Revisión</div>
+            <div class="pay-amount">$42,333</div>
+            <div class="pay-moment">Al entregar para revisión</div>
+            <div class="pay-desc">Sistema funcional en staging. El cliente prueba, valida flujos y solicita ajustes
+              antes de producción.</div>
+          </div>
+          <div class="pay-connector">→</div>
+          <div class="pay-card p3">
+            <div class="pay-num">Pago 03 · Aprobación</div>
+            <div class="pay-amount">$42,334</div>
+            <div class="pay-moment">Al aprobar y firmar entrega</div>
+            <div class="pay-desc">Proyecto en producción, Agentes Inmobiliarios capacitados, documentación entregada y
+              soporte activo.</div>
+          </div>
+        </div>
+
+        <div class="pay-total">
+          <div class="pay-total-label">$42,333 + $42,333 + $42,334 = <strong>$127,000 MXN total</strong></div>
+          <div class="pay-total-note">Precios + IVA si aplica · Vigencia 30 días</div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ 05 · AGENTE IA — ALCANCE REAL ═══════════════ -->
+      <div class="section">
+        <div class="stitle">05 · El Agente IA — Alcance Real</div>
+        <p style="font-size:14px; color:#64748b; font-style:italic; margin-bottom:18px;">El objetivo principal es
+          concretar la cita y ser el agente personal del Agente Inmobiliario dentro del universo de Tráfico
+          Inmobiliario.</p>
+
+        <div class="scope-compare">
+          <div class="scope-card good-scope">
+            <h4>✓ Lo que la IA SÍ hace</h4>
+            <div class="scope-item">
+              <div class="si-icon si-yes">✓</div><span class="yes">Detecta leads de todos los portales aliados a
+                EasyBroker en segundos</span>
+            </div>
+            <div class="scope-item">
+              <div class="si-icon si-yes">✓</div><span class="yes">Se presenta como asistente de Tráfico
+                Inmobiliario</span>
+            </div>
+            <div class="scope-item">
+              <div class="si-icon si-yes">✓</div><span class="yes">Comparte la ficha técnica de la propiedad asignada
+                desde EasyBroker</span>
+            </div>
+            <div class="scope-item">
+              <div class="si-icon si-yes">✓</div><span class="yes">Califica y clasifica al prospecto: presupuesto, zona,
+                tipo de inmueble, urgencia</span>
+            </div>
+            <div class="scope-item">
+              <div class="si-icon si-yes">✓</div><span class="yes">Genera informe estructurado del estado del lead
+                (caliente / tibio / frío)</span>
+            </div>
+            <div class="scope-item">
+              <div class="si-icon si-yes">✓</div><span class="yes">Detecta y filtra spam, bots y ataques
+                automáticamente</span>
+            </div>
+            <div class="scope-item">
+              <div class="si-icon si-yes">✓</div><span class="yes">Concreta y agenda la cita con el Agente Inmobiliario
+                asignado</span>
+            </div>
+            <div class="scope-item">
+              <div class="si-icon si-yes">✓</div><span class="yes">Contacta al Agente Inmobiliario con cita + informe
+                completo del lead</span>
+            </div>
+            <div class="scope-item">
+              <div class="si-icon si-yes">✓</div><span class="yes">Responde preguntas del Agente Inmobiliario sobre el
+                lead como secretaria</span>
+            </div>
+            <div class="scope-item">
+              <div class="si-icon si-yes">✓</div><span class="yes">Gestiona reagendamiento de citas con notificación
+                automática al cliente</span>
+            </div>
+            <div class="scope-item">
+              <div class="si-icon si-yes">✓</div><span class="yes">Envía confirmación y recordatorio de cita al
+                prospecto</span>
+            </div>
+            <div class="scope-item">
+              <div class="si-icon si-yes">✓</div><span class="yes">Toda la información viene directo de EasyBroker vía
+                API</span>
+            </div>
+          </div>
+          <div class="scope-card bad-scope">
+            <h4>✕ Lo que la IA NO hace</h4>
+            <div class="scope-item">
+              <div class="si-icon si-no">✗</div><span>Negociar precios o hacer contraofertas</span>
+            </div>
+            <div class="scope-item">
+              <div class="si-icon si-no">✗</div><span>Garantizar datos si EasyBroker tiene información
+                desactualizada</span>
+            </div>
+            <div class="scope-item">
+              <div class="si-icon si-no">✗</div><span>Reemplazar al Agente Inmobiliario en la cita o el cierre</span>
+            </div>
+            <div class="scope-item">
+              <div class="si-icon si-no">✗</div><span>Tomar decisiones comerciales fuera de su guión configurado</span>
+            </div>
+            <div class="scope-item">
+              <div class="si-icon si-no">✗</div><span>Procesar pagos o firmar documentos</span>
+            </div>
+            <div class="scope-item">
+              <div class="si-icon si-no">✗</div><span>Inventar información que no esté en el CRM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ 06 · ARQUITECTURA ═══════════════ -->
+      <div class="section">
+        <div class="stitle">06 · Arquitectura del Sistema</div>
+
+        <div class="arch-wrap">
+          <div class="arch-label">Origen de los leads — múltiples portales aliados</div>
+          <div class="arch-row">
+            <div class="arch-node blu">🏢 Inmuebles24</div>
+            <div class="arch-arrow">+</div>
+            <div class="arch-node blu">🏠 Lamudi</div>
+            <div class="arch-arrow">+</div>
+            <div class="arch-node blu">🌐 Otros portales aliados</div>
+            <div class="arch-arrow">→</div>
+            <div class="arch-node grn">📋 EasyBroker CRM</div>
+            <div class="arch-arrow">→</div>
+            <div class="arch-node hi">⚡ Webhook / API trigger</div>
+          </div>
+          <div class="arch-row" style="margin:4px 0;">
+            <div class="arch-arrow" style="transform:rotate(90deg)">↓</div>
+          </div>
+          <div class="arch-label">Motor de conversión + seguridad</div>
+          <div class="arch-row">
+            <div class="arch-node hi">🛡️ Filtro Antispam / Antiataques</div>
+            <div class="arch-arrow">→</div>
+            <div class="arch-node hi">🤖 Agente IA</div>
+            <div class="arch-arrow">↔</div>
+            <div class="arch-node">💬 WhatsApp Business</div>
+            <div class="arch-arrow">↔</div>
+            <div class="arch-node">📅 Motor de citas</div>
+          </div>
+          <div class="arch-row" style="margin:4px 0;">
+            <div class="arch-arrow" style="transform:rotate(90deg)">↓</div>
+          </div>
+          <div class="arch-label">Secretaría digital + gestión interna</div>
+          <div class="arch-row">
+            <div class="arch-node grn">👔 Agente Inmobiliario (notificación + informe)</div>
+            <div class="arch-arrow">↔</div>
+            <div class="arch-node">📊 Dashboard</div>
+            <div class="arch-arrow">↔</div>
+            <div class="arch-node">⚙️ Configurador</div>
+            <div class="arch-arrow">↔</div>
+            <div class="arch-node blu">🌐 Portal</div>
+          </div>
+        </div>
+
+        <div class="stack-grid">
+          <div class="stack-item">
+            <div class="stack-icon">⚡</div>
+            <div>
+              <div class="stack-layer">CRM Integration</div>
+              <h4>EasyBroker API v1</h4>
+              <p>Disponible y habilitada ✓. Lectura de leads multi-portal y propiedades en tiempo real.</p>
+            </div>
+          </div>
+          <div class="stack-item">
+            <div class="stack-icon">🤖</div>
+            <div>
+              <div class="stack-layer">Agente IA</div>
+              <h4>Agente API</h4>
+              <p>Conversaciones complejas en español. Calificación, informes y rol de secretaria del Agente
+                Inmobiliario.</p>
+            </div>
+          </div>
+          <div class="stack-item">
+            <div class="stack-icon">🛡️</div>
+            <div>
+              <div class="stack-layer">Seguridad</div>
+              <h4>Antispam + Antiataques</h4>
+              <p>Detección de bots, spam y phishing. Solo leads legítimos pasan al flujo de conversión.</p>
+            </div>
+          </div>
+          <div class="stack-item">
+            <div class="stack-icon">💬</div>
+            <div>
+              <div class="stack-layer">WhatsApp</div>
+              <h4>Meta Cloud API / Twilio</h4>
+              <p>Integración oficial. Canal principal de contacto con leads y con el Agente Inmobiliario.</p>
+            </div>
+          </div>
+          <div class="stack-item">
+            <div class="stack-icon">🌐</div>
+            <div>
+              <div class="stack-layer">Frontend / Portal</div>
+              <h4>Next.js 14 + TypeScript</h4>
+              <p>SEO para que las 500 propiedades indexen en Google. SSR + responsive completo.</p>
+            </div>
+          </div>
+          <div class="stack-item">
+            <div class="stack-icon">🗄️</div>
+            <div>
+              <div class="stack-layer">Backend / DB</div>
+              <h4>Node.js + PostgreSQL</h4>
+              <p>Historial de conversaciones, informes de leads, métricas. Supabase cloud, seguro y escalable.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ 07 · PLAN DE TRABAJO ═══════════════ -->
+      <div class="section">
+        <div class="stitle">07 · Plan de Trabajo — 10 Semanas</div>
+
+        <div class="tl">
+          <div class="tl-item">
+            <div class="phase">Fase 1 · Semanas 1–3 · Pago 01</div>
+            <h4>Conversor Core — EasyBroker + IA + Seguridad</h4>
+            <ul class="tl-tasks">
+              <li>Integración con EasyBroker API — captura de leads de todos los portales aliados en tiempo real</li>
+              <li>Arquitectura del sistema de conversación, clasificación e informes</li>
+              <li>Desarrollo del agente IA: flujo lead → calificación → informe → cita</li>
+              <li>Implementación del sistema antispam y antiataques</li>
+              <li>Conexión con WhatsApp Business API</li>
+              <li>Motor de asignación automática al Agente Inmobiliario correspondiente</li>
+              <li>Flujo de notificación al Agente Inmobiliario con informe y cita</li>
+            </ul>
+            <div class="tl-deliverable">Agente IA funcional en staging con leads reales de prueba</div>
+          </div>
+          <div class="tl-item">
+            <div class="phase">Fase 2 · Semanas 4–7 · Pago 02 al entregar</div>
+            <h4>Portal + Dashboard + Configurador + Reagendamiento</h4>
+            <ul class="tl-tasks">
+              <li>Portal inmobiliario con catálogo filtrado de 500 propiedades desde EasyBroker</li>
+              <li>Chat IA integrado en el portal con el mismo agente y seguridad</li>
+              <li>Dashboard del Agente Inmobiliario: historial, informes de clasificación, métricas, citas</li>
+              <li>Configurador: reglas IA, plantillas, horarios, zonas, filtros antispam</li>
+              <li>Sistema de agendamiento con confirmación, recordatorios y reagendamiento</li>
+              <li>Módulo de secretaría: Agente Inmobiliario puede hacer preguntas sobre el lead a la IA</li>
+            </ul>
+            <div class="tl-deliverable">Sistema completo en staging listo para revisión del cliente</div>
+          </div>
+          <div class="tl-item">
+            <div class="phase">Fase 3 · Semanas 8–10 · Pago 03 al aprobar</div>
+            <h4>Pruebas, Ajuste y Lanzamiento</h4>
+            <ul class="tl-tasks">
+              <li>Pruebas reales con leads activos de EasyBroker (QA conversacional)</li>
+              <li>Ajuste fino del agente: tono, informes, casos borde en español</li>
+              <li>Pruebas de seguridad: antispam y antiataques con casos reales</li>
+              <li>Capacitación a los 11 Agentes Inmobiliarios en el dashboard y flujo de secretaría</li>
+              <li>Capacitación al admin en el configurador</li>
+              <li>Optimización SEO del portal y pruebas de responsividad móvil</li>
+              <li>Documentación técnica y manual de usuario</li>
+              <li>Lanzamiento en producción + soporte post-launch 2 semanas</li>
+            </ul>
+            <div class="tl-deliverable">Plataforma en vivo, Agentes Inmobiliarios capacitados, proyecto cerrado</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ 08 · CONDICIONES ═══════════════ -->
+      <div class="section">
+        <div class="stitle">08 · Condiciones del Proyecto</div>
+
+        <div class="terms-grid">
+          <div class="term">
+            <div class="term-num">30d</div>
+            <h4>Vigencia de la propuesta</h4>
+            <p>Precios y tiempos válidos por 30 días naturales desde la fecha de envío.</p>
+          </div>
+          <div class="term">
+            <div class="term-num">48h</div>
+            <h4>Respuesta de revisiones</h4>
+            <p>El cliente aprueba entregables en máximo 48 horas para no afectar el calendario.</p>
+          </div>
+          <div class="term">
+            <div class="term-num">×2</div>
+            <h4>Rondas de revisión</h4>
+            <p>Cada fase incluye 2 rondas de ajustes. Cambios de alcance se cotizan por separado.</p>
+          </div>
+          <div class="term">
+            <div class="term-num">v0.3</div>
+            <h4>Versión preliminar</h4>
+            <p>Propuesta basada en levantamiento del 07/04/2026. Se confirma en kickoff técnico.</p>
+          </div>
+        </div>
+
+        <div class="tc-section">
+          <div class="tc-header">
+            <div class="tc-icon">📋</div>
+            <div>
+              <h3>Lo que necesitamos para arrancar</h3>
+              <p>Requisitos que el cliente debe proveer antes o al inicio del proyecto</p>
+            </div>
+          </div>
+          <div class="tc-body">
+            <div class="tc-item">
+              <div class="tc-num">01</div>
+              <div class="tc-content">
+                <span class="tc-tag tag-green">Disponible ✓</span>
+                <h4>API key de EasyBroker</h4>
+                <p>Credenciales con permisos de lectura de leads y propiedades. Ya confirmado que está disponible —
+                  elimina el principal riesgo técnico del proyecto.</p>
+              </div>
+            </div>
+            <div class="tc-item">
+              <div class="tc-num">02</div>
+              <div class="tc-content">
+                <span class="tc-tag tag-orange">Requerido</span>
+                <h4>Número de WhatsApp Business dedicado</h4>
+                <p>Debe ser un número sin bot activo previo. Si existe uno con historial, se coordinará la migración
+                  cuidadosamente para no perder la cuenta ni las conversaciones.</p>
+              </div>
+            </div>
+            <div class="tc-item">
+              <div class="tc-num">03</div>
+              <div class="tc-content">
+                <span class="tc-tag tag-blue">Organización interna</span>
+                <h4>Lista de los 11 Agentes Inmobiliarios</h4>
+                <p>Nombre completo, zona geográfica que atiende y propiedades asignadas en EasyBroker. Necesario para
+                  configurar el motor de asignación automática correctamente.</p>
+              </div>
+            </div>
+            <div class="tc-item">
+              <div class="tc-num">04</div>
+              <div class="tc-content">
+                <span class="tc-tag tag-blue">Branding</span>
+                <h4>Identidad visual de Tráfico Inmobiliario</h4>
+                <p>Logo en alta resolución, paleta de colores y guía de marca. Si no tienen guía formal, Orbicrea
+                  propone una basada en el sector.</p>
+              </div>
+            </div>
+            <div class="tc-item">
+              <div class="tc-num">05</div>
+              <div class="tc-content">
+                <span class="tc-tag tag-orange">Infraestructura</span>
+                <h4>Dominio para el portal inmobiliario</h4>
+                <p>Dominio disponible para el sitio público. Si no tienen uno, Orbicrea puede orientarlos en la elección
+                  y registro del dominio más adecuado.</p>
+              </div>
+            </div>
+          </div>
+          <div class="tc-warning">
+            <p><strong>Nota v0.3:</strong> Esta propuesta está basada en el levantamiento de requerimientos del 7 de
+              abril de 2026 con Paco y el equipo de Tráfico Inmobiliario. Los números son preliminares y se confirman en
+              el kickoff técnico. Funcionalidades adicionales identificadas durante el levantamiento — sistema de citas
+              con cálculo de traslados, auditoría de publicaciones en portales, sistema de reviews de Agentes
+              Inmobiliarios por parte de compradores — son candidatas a <strong>Fase 2 por cotizar por
+                separado</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /body -->
+
+    <!-- ═══════════════ CTA ═══════════════ -->
+    <div class="cta">
+      <p><strong>¿Arrancamos la próxima semana?</strong><br>Con el primer pago de $42,333 MXN firmado, el agente IA
+        estará haciendo su primer contacto real con leads de EasyBroker en 3 semanas.</p>
+      <button class="cta-btn" onclick="window.print()">Imprimir / Guardar PDF →</button>
+    </div>
+
+    <!-- ═══════════════ FOOTER ═══════════════ -->
+    <div class="footer">
+      <div class="fb">Orbicrea Studio</div>
+      <div class="fl">propuesta comercial · v0.3 · tráfico inmobiliario · abril 2026 · válida 30 días · precios MXN +
+        IVA</div>
+    </div>
+
+  </div>
+</body>
+
+</html>
